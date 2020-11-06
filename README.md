@@ -69,3 +69,12 @@ You have two VPCs, one called Cloud-VPC which is the AWS side of the infrastruct
 * An AWS Glue database which is where the metadata of your dataset is going to be stored.
 
 ## Test the Communication between the two environments
+
+Go to AWS Systems Manager and on the left pane click on Managed Instances. Select *DC-Private-Instance* instance and click Actions > Start session. A new tab is opened with the instance’s terminal. Execute this command: ping (privateI) where the private IP is the IP of the *Cloud-VPC-private-instance* instance. 
+In my case the commando look like this:
+```bash
+ping 10.0.1.88
+```
+If you get this message when executing the command:
+
+That means that the VPN connection is working successfully and the communication is done privately.
