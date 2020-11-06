@@ -82,7 +82,7 @@ That means that the VPN connection is working successfully and the communication
 
 ## Test AWS Glue
 
-Go to AWS Glue console: 
+Go to AWS Glue console:
 * On the left pane click on Connections. You will see one connection listed called “ glueConnection-(+random string) select and click test connection. 
 * If the results is successful that means AWS Glue could connect to your On premises DB instance through the VPN connection.
 * Now Select Crawlers and run it. This is going to scan the dataset and discover tables and store the dataset schema in the “dbcrawler” AWS Glue database.
