@@ -42,3 +42,7 @@ aws s3 cp . s3://$S3NAME --profile $AWSPROFILE --recursive
 ```bash
 aws cloudformation create-stack --stack-name $STACKNAME --template-url https://$S3NAME.s3.amazonaws.com/master.yaml --tags Key=project,Value=glue-project --profile $AWSPROFILE --region=$AWSREGION  --parameters ParameterKey=Bucket,ParameterValue=$S3NAME --capabilities CAPABILITY_IAM
 ```
+*NOTE*: The template takes 30 min to deploy approx.
+
+## Explore your environment
+
