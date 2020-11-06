@@ -9,3 +9,4 @@ This repository contains a demo showcasing features of AWS Services. When launch
 
 ## Architecture
 
+![AWS Glue Demo Architecture](/Demo-Architecture.jpg)
