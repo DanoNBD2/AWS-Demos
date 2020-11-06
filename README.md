@@ -120,4 +120,8 @@ Go to AWS Glue Console:
 
 * The files are loaded in Parquet format so all the ETL process is Done. `CONGRATULATIONS!`
 
+## Authors
+
+* Daniel Neri
+* Federica Ciuffo
 
