@@ -94,6 +94,14 @@ Go to AWS Glue console:
 ## Perform an AWS Glue Job (Optional)
 
 Go to AWS Glue Console:
-* On the left pane click on Jobs
-* Click on Add Job
+* On the left pane click on Jobs.
+* Click on Add Job.
 * Put a name and the select the role called "demo-Glue-(+random string)
+*Photo*
+* leave the rest parameters as default and click next.
+* Select the data source *raw_sportstickets_public_players* and click next.
+* In the next screen select these and select the bucket that was created for you (the one that has demo-glues3bucket+random string by name):
+*Photo*
+* Click save job and edit script
+* In the next step click Run Job button and Run Job again
+* On the right corner of console click the X button and wait for the job to finish
