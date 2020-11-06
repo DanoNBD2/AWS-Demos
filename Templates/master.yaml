@@ -13,7 +13,7 @@ Resources:
   VPC1:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: !Sub https://${Bucket}.s3.amazonaws.com/simple_vpc.yaml
+      TemplateURL: !Sub https://${Bucket}.s3.amazonaws.com/Templates/simple_vpc.yaml
       TimeoutInMinutes: '60'
       Parameters:
         EnvironmentName: DC-VPC
@@ -33,7 +33,7 @@ Resources:
   VPC2:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: !Sub https://${Bucket}.s3.amazonaws.com/simple_vpc.yaml
+      TemplateURL: !Sub https://${Bucket}.s3.amazonaws.com/Templates/simple_vpc.yaml
       TimeoutInMinutes: '60'
       Parameters:
         EnvironmentName: Cloud-VPC
@@ -72,7 +72,7 @@ Resources:
   PreSharedKey:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: !Sub https://${Bucket}.s3.amazonaws.com/lambda_generate_random_string.yaml
+      TemplateURL: !Sub https://${Bucket}.s3.amazonaws.com/Templates/lambda_generate_random_string.yaml
       TimeoutInMinutes: '60'
       Parameters:
         StringLength: 32
@@ -88,7 +88,7 @@ Resources:
     - VPC2
     - PreSharedKey
     Properties:
-      TemplateURL: !Sub https://${Bucket}.s3.amazonaws.com/vpn.yaml
+      TemplateURL: !Sub https://${Bucket}.s3.amazonaws.com/Templates/vpn.yaml
       TimeoutInMinutes: '60'
       Parameters:
         EnvironmentName: Cloud-VPC
@@ -107,7 +107,7 @@ Resources:
     Type: AWS::CloudFormation::Stack
     DependsOn: VPNawsSide
     Properties:
-      TemplateURL: !Sub https://${Bucket}.s3.amazonaws.com/lambda_get_vpn_ips.yaml
+      TemplateURL: !Sub https://${Bucket}.s3.amazonaws.com/Templates/lambda_get_vpn_ips.yaml
       TimeoutInMinutes: '60'
       Parameters:
         VpnConnectionId: !GetAtt VPNawsSide.Outputs.vpcVpnConnectionPrimary 
@@ -123,7 +123,7 @@ Resources:
     - VPNIPs
     - PreSharedKey
     Properties:
-      TemplateURL: !Sub https://${Bucket}.s3.amazonaws.com/OpenSwan.yaml
+      TemplateURL: !Sub https://${Bucket}.s3.amazonaws.com/Templates/OpenSwan.yaml
       TimeoutInMinutes: '60'
       Parameters:
         EnvironmentName: DC-VPC
@@ -159,7 +159,7 @@ Resources:
     Type: AWS::CloudFormation::Stack
     DependsOn: Openswan
     Properties:
-      TemplateURL: !Sub https://${Bucket}.s3.amazonaws.com/lambda_get_primary_eni_id.yaml
+      TemplateURL: !Sub https://${Bucket}.s3.amazonaws.com/Templates/lambda_get_primary_eni_id.yaml
       TimeoutInMinutes: '20'
       Parameters:
         InstanceId: !GetAtt Openswan.Outputs.InstanceId 
@@ -171,7 +171,7 @@ Resources:
     DependsOn: 
     - VPC1
     Properties:
-      TemplateURL: !Sub https://${Bucket}.s3.amazonaws.com/PrivateInstance.yaml
+      TemplateURL: !Sub https://${Bucket}.s3.amazonaws.com/Templates/PrivateInstance.yaml
       TimeoutInMinutes: '60'
       Parameters:
         EnvironmentName: DC-VPC
@@ -192,7 +192,7 @@ Resources:
     - VPC1
     - RDS
     Properties:
-      TemplateURL: !Sub https://${Bucket}.s3.amazonaws.com/InstancePostgres.yaml
+      TemplateURL: !Sub https://${Bucket}.s3.amazonaws.com/Templates/InstancePostgres.yaml
       TimeoutInMinutes: '60'
       Parameters:
         EnvironmentName: DC-VPC
@@ -215,7 +215,7 @@ Resources:
     DependsOn: 
     - VPC2
     Properties:
-      TemplateURL: !Sub https://${Bucket}.s3.amazonaws.com/PrivateInstance.yaml
+      TemplateURL: !Sub https://${Bucket}.s3.amazonaws.com/Templates/PrivateInstance.yaml
       TimeoutInMinutes: '60'
       Parameters:
         EnvironmentName: Cloud-VPC
@@ -248,7 +248,7 @@ Resources:
     DependsOn: 
     - VPC1
     Properties:
-      TemplateURL: !Sub https://${Bucket}.s3.amazonaws.com/rds.yaml
+      TemplateURL: !Sub https://${Bucket}.s3.amazonaws.com/Templates/rds.yaml
       TimeoutInMinutes: '60'
       Parameters:
         EnvironmentName: DC-VPC
@@ -277,7 +277,7 @@ Resources:
     - VPC2
     - RDS
     Properties:
-      TemplateURL: !Sub https://${Bucket}.s3.amazonaws.com/glue.yaml
+      TemplateURL: !Sub https://${Bucket}.s3.amazonaws.com/Templates/glue.yaml
       TimeoutInMinutes: '60'
       Parameters:
         EnvironmentName: Cloud-VPC
