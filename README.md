@@ -46,3 +46,26 @@ aws cloudformation create-stack --stack-name $STACKNAME --template-url https://$
 
 ## Explore your environment
 
+You have two VPCs, one called Cloud-VPC which is the AWS side of the infrastructure and the other one called DC-VPC which is the simulated Data Center. 
+
+In the Cloud-VPC note that it has:
+* 4 subnets and all of them are private (even though there are two named as public, there is no internet gateway attached to the VPC so there is no public communication). The reason is because the communication between these two environments is going to be through the VPN, so there is no need to have public subnets nor internet access. 
+* 1 private route tables and inside you can see a S3 endpoint. This is for AWS Glue to access S3 privately (as this VPC does not has access to internet). 
+* An EC2 instance with no public IP address. This is for you to test the VPN communication between the two environments.
+
+In the data center VPC:
+* Two private and two public subnets.
+* 1 NatGateway 
+* In the public subnet (AZ1) you have an EC2 instance already configured with OpenSwan software, just to serve as Customer’s Router (Customer Gateway Device).
+* In the private subnet (AZ1) behind the router resides the postgres database to which AWS Glue is going to connect and also 2 EC2 instances, one called *PrivateInstanceToPostgresDCVPC* which is going to put the sample data inside of the DB and *DC-VPC-private-instance* which is going to be used to ping the Cloud-VPC instance to test VPN connection.
+
+AWS Site-to-Site VPN already created and fully configured:
+* Go to AWS VPC console and on the left pane, select Site-to-Site VPN connections and on the Tunnel Details tab check that only one tunnel is up. 
+* The reason why only one tunnel is up is because of the OpenSwan configuration. This is not highly available and redundant but sufficient for this demo.
+
+In the AWS Glue console:
+* An AWS Glue Connection already configured with the JDBC connector to the postgres database.
+* An AWS Glue Crawler which is used to scan and discover the database schema of your dataset and it is going to use the JDBC connection created.
+* An AWS Glue database which is where the metadata of your dataset is going to be stored.
+
+## Test the Communication between the two environments
