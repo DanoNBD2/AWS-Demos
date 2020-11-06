@@ -80,3 +80,15 @@ If you get this message when executing the command:
 ![Ping message](/ping_message.png)
 
 That means that the VPN connection is working successfully and the communication is done privately.
+
+## Test AWS Glue
+
+Go to AWS Glue console: 
+* On the left pane click on Connections. You will see one connection listed called “ glueConnection-(+random string) select and click test connection. 
+* If the results is successful that means AWS Glue could connect to your On premises DB instance through the VPN connection.
+* Now Select Crawlers and run it. This is going to scan the dataset and discover tables and store the dataset schema in the “dbcrawler” AWS Glue database.
+* Go and click in tables on the left pane and feel free to explore the dataset schema inside of the on premises database.
+
+`YOU ARE DONE!` The connection was done successfully and you have full connectivity between AWS Glue and your On Premises enviornment.
+
+## Perform an AWS Glue Job (Optional)
