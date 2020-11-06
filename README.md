@@ -97,21 +97,28 @@ Go to AWS Glue Console:
 * On the left pane click on Jobs.
 * Click on Add Job.
 * Put a name and the select the role called "demo-Glue-(+random string)
+
 ![Job1](/GlueJob_Config1.png)
+
 * leave the rest parameters as default and click next.
 * Select the data source *raw_sportstickets_public_players* and click next.
 * In the next screen select these and select the bucket that was created for you (the one that has demo-glues3bucket+random string by name):
+
 ![Job2](/GlueJob_config2.png)
+
 * Click save job and edit script
 * In the next step click Run Job button and Run Job again
 * On the right corner of console click the X button and wait for the job to finish
 
 ![Job3](/GlueJob_Config3.png)
 
+
 * The Job has succeeded!! Now go to Amazon S3 console and click on the S3 bucket created by the template and expolore the procesed data
+
 
 ![Job4](/GlueJob_Config4.png)
 
-* The files are loaded in Parquet format so all the ETL process is Done. Congratulations.
+
+* The files are loaded in Parquet format so all the ETL process is Done. `CONGRATULATIONS!`
 
 
