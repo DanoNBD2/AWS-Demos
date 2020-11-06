@@ -9,8 +9,7 @@ This repository contains a demo showcasing features of AWS Services. When launch
 
 ## Architecture
 
-![AWS Glue Demo Architecture](/Demo-Architecture.jpg)
-
+![AWS Glue Demo Architecture](/images/Demo-Architecture.jpg)
 What you have here are two environments. One simulating the data center (DC-VPC) and on the right, the cloud environment (Cloud-VPC). 
 
 In the Cloud VPC we have no internet connection, so all the communication is going to be private. In the private subnet we have the Elastic Network Interfaces created by AWS Glue to provide network connectivity for the service through your VPC. Note that the number of ENIs depends on the number of data processing units (DPUs) selected for an AWS Glue ETL job. AWS Glue DPU instances communicate with each other and with your JDBC-compliant database using ENIs.
@@ -77,7 +76,7 @@ ping 10.0.1.88
 ```
 If you get this message when executing the command:
 
-![Ping message](/ping_message.png)
+![Ping message](/images/ping_message.png)
 
 That means that the VPN connection is working successfully and the communication is done privately.
 
@@ -98,25 +97,25 @@ Go to AWS Glue Console:
 * Click on Add Job.
 * Put a name and the select the role called "demo-Glue-(+random string)
 
-![Job1](/GlueJob_Config1.png)
+![Job1](/images/GlueJob_Config1.png)
 
 * leave the rest parameters as default and click next.
 * Select the data source *raw_sportstickets_public_players* and click next.
 * In the next screen select these and select the bucket that was created for you (the one that has demo-glues3bucket+random string by name):
 
-![Job2](/GlueJob_config2.png)
+![Job2](/images/GlueJob_config2.png)
 
 * Click save job and edit script
 * In the next step click Run Job button and Run Job again
 * On the right corner of console click the X button and wait for the job to finish
 
-![Job3](/GlueJob_Config3.png)
+![Job3](/images/GlueJob_Config3.png)
 
 
 * The Job has succeeded!! Now go to Amazon S3 console and click on the S3 bucket created by the template and expolore the procesed data
 
 
-![Job4](/GlueJob_Config4.png)
+![Job4](/images/GlueJob_Config4.png)
 
 
 * The files are loaded in Parquet format so all the ETL process is Done. `CONGRATULATIONS!`
