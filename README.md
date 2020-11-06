@@ -92,3 +92,8 @@ Go to AWS Glue console:
 `YOU ARE DONE!` The connection was done successfully and you have full connectivity between AWS Glue and your On Premises enviornment.
 
 ## Perform an AWS Glue Job (Optional)
+
+Go to AWS Glue Console:
+* On the left pane click on Jobs
+* Click on Add Job
+* Put a name and the select the role called "demo-Glue-(+random string)
