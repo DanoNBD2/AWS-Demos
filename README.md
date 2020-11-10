@@ -124,7 +124,7 @@ Go to AWS Glue Console:
 
 * The files are loaded in Parquet format so all the ETL process is Done. `CONGRATULATIONS!`
 
-##Clean up your environment
+## Clean up your environment
 
 After completing the demo, delete AWS CloudFormation Stack using AWS Console or AWS CLI:
 ```bash
