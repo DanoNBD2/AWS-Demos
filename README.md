@@ -37,7 +37,10 @@ aws s3 mb s3://$S3NAME --profile $AWSPROFILE --region $AWSREGION
 ```bash
 aws s3 cp . s3://$S3NAME --profile $AWSPROFILE --recursive
 ```
-6. Create the CloudFormation stack:
+6. Go to Amazon EC2 Console and on the left pane click on *Key Pairs* and create a key pair called **OpenswanKeyPair**
+![Key_Pair](/images/Key_Pair.png)
+
+7. Create the CloudFormation stack:
 ```bash
 aws cloudformation create-stack --stack-name $STACKNAME --template-url https://$S3NAME.s3.amazonaws.com/Templates/main.yaml --tags Key=project,Value=glue-project --profile $AWSPROFILE --region=$AWSREGION  --parameters ParameterKey=Bucket,ParameterValue=$S3NAME --capabilities CAPABILITY_IAM
 ```
