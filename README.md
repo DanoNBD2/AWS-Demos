@@ -38,7 +38,7 @@ aws s3 mb s3://$S3NAME --profile $AWSPROFILE --region $AWSREGION
 aws s3 cp . s3://$S3NAME --profile $AWSPROFILE --recursive
 ```
 6. Go to Amazon EC2 Console and on the left pane click on *Key Pairs* and create a key pair called **OpenswanKeyPair**
-![Key_Pair](/images/Key_Pair.png)
+![Key_Pair](/images/KeyPair.png)
 
 7. Create the CloudFormation stack:
 ```bash
