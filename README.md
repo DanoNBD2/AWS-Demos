@@ -24,10 +24,10 @@ On the other hand, in the DC-VPC, we have an EC2 instance configured with OpenSw
 2. Clone the repository.
 3. Export the following parameters in your CLI:
 ```bash
-export S3NAME = <YOUR BUCKET NAME> 
-export AWSREGION = <YOUR AWS REGION>
-export AWSPROFILE = <YOUR AWS PROFILE>
-export STACKNAME = <THE NAME OF YOUR STACK>
+export S3NAME=<YOUR BUCKET NAME> 
+export AWSREGION=<YOUR AWS REGION>
+export AWSPROFILE=<YOUR AWS PROFILE>
+export STACKNAME=<THE NAME OF YOUR STACK>
 ```
 4. Create a S3 bucket:
 ```bash
