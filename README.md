@@ -128,7 +128,7 @@ Go to AWS Glue Console:
 
 After completing the demo, delete AWS CloudFormation Stack using AWS Console or AWS CLI:
 ```bash
-aws cloudformation delete-stack --stack-name [the name of your stack]
+aws cloudformation delete-stack --stack-name $STACKNAME
 ```
 
 ## Authors
