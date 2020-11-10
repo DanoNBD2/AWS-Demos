@@ -71,6 +71,9 @@ You have two VPCs, one called Cloud-VPC which is the AWS side of the infrastruct
 * An AWS Glue Crawler which is used to scan and discover the database schema of your dataset and it is going to use the JDBC connection created.
 * An AWS Glue database which is where the metadata of your dataset is going to be stored.
 
+**Amazon S3 bucket:**
+* There is a bucket called *demo-glues3bucket-RandomString* created by the template used to store the processed data by AWS Glue. 
+
 ## Test the Communication between the two environments
 
 Go to AWS Systems Manager and on the left pane click on Managed Instances. Select *DC-Private-Instance* instance and click Actions > Start session. A new tab is opened with the instance’s terminal. Execute this command: ping (privateI) where the private IP is the IP of the *Cloud-VPC-private-instance* instance. 
