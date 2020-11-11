@@ -146,6 +146,8 @@ aws cloudformation delete-stack --stack-name $STACKNAME
 3. Select the ENI's used by your AWS Glue Job and delete all of them.
 4. Now you can delete de AWS Cloud Formation template from the CLI or from the console.
 
+Cheers!!
+
 ## Authors
 
 * Daniel Neri
