@@ -77,10 +77,6 @@ Parameters:
     Default: 'false'
     AllowedValues:
       - 'false'
-  # Restore
-  # SnapshotArn:
-  #   Type: String
-  #   Default: arn:aws:rds:eu-west-1:202138321653:snapshot:blog-db-glue-final-snapshot
 
 Resources:
   RDSAccessSecurityGroup:
@@ -122,7 +118,6 @@ Resources:
     - DbSubnetGroup
     - RDSAccessSecurityGroup
     Properties:
-      #DBSnapshotIdentifier: !Ref SnapshotArn
       AllocatedStorage: 30
       AllowMajorVersionUpgrade: false
       BackupRetentionPeriod: !Ref BackupRetentionPeriod

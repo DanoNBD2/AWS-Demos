@@ -117,12 +117,8 @@ Resources:
             Resource: '*'
       RouteTableIds: 
         - !Ref PrivateRouteTable
-        # - rtb-0131227e694f9901a #private route table from CloudVPC 
-        # - rtb-09062dc3d614dd526 #private route table from CloudVPC 
       ServiceName: !Sub 'com.amazonaws.${AWS::Region}.s3'
       VpcId: !Ref VPC
-
-
 
 # #Glue Job
 
