@@ -28,7 +28,7 @@ On the other hand, in the DC-VPC, we have an EC2 instance configured with OpenSw
 
 [![Launch CFN stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://eu-west-1.console.aws.amazon.com/cloudformation/home?region=eu-west-1#/stacks/quickcreate?templateUrl=https%3A%2F%2Faws-glue-with-s2s-vpn.s3-eu-west-1.amazonaws.com%2FTemplates%2Fmain.yaml&stackName=aws-glue-with-s2s-vpn)
 
-(Optional) Or deploy the template with CLI:
+**(Optional)** Or deploy the template with CLI:
 
 * If you don’t have the AWS CLI installed, follow [these](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html) steps. And to configure the AWS CLI, follow [these](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html#cli-configure-quickstart-config). 
 * Clone the repository.
