@@ -30,25 +30,25 @@ On the other hand, in the DC-VPC, we have an EC2 instance configured with OpenSw
 
 (Optional) Or deploy the template with CLI:
 
-1. If you don’t have the AWS CLI installed, follow [these](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html) steps. And to configure the AWS CLI, follow [these](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html#cli-configure-quickstart-config). 
-2. Clone the repository.
-3. Export the following parameters in your CLI:
+* If you don’t have the AWS CLI installed, follow [these](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html) steps. And to configure the AWS CLI, follow [these](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html#cli-configure-quickstart-config). 
+* Clone the repository.
+* Export the following parameters in your CLI:
 ```bash
 export S3NAME=<YOUR BUCKET NAME> 
 export AWSREGION=<YOUR AWS REGION>
 export AWSPROFILE=<YOUR AWS PROFILE>
 export STACKNAME=<THE NAME OF YOUR STACK>
 ```
-4. Create a S3 bucket:
+* Create a S3 bucket:
 ```bash
 aws s3 mb s3://$S3NAME --profile $AWSPROFILE --region $AWSREGION
 ```
-5. Copy all the files from the cloned repository to your S3. To do that, enter the folder where you have the files that you need to copy and execute the following:
+* Copy all the files from the cloned repository to your S3. To do that, enter the folder where you have the files that you need to copy and execute the following:
 ```bash
 aws s3 cp . s3://$S3NAME --profile $AWSPROFILE --recursive
 ```
 
-6. Go back to your terminal and create the CloudFormation stack:
+* Go back to your terminal and create the CloudFormation stack:
 ```bash
 aws cloudformation create-stack --stack-name $STACKNAME --template-url https://$S3NAME.s3.amazonaws.com/Templates/main.yaml --tags Key=project,Value=glue-project --profile $AWSPROFILE --region=$AWSREGION  --parameters ParameterKey=Bucket,ParameterValue=$S3NAME --capabilities CAPABILITY_IAM
 ```
