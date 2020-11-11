@@ -1,4 +1,4 @@
-# Connecting AWS Glue to your On Premises Data center Demo
+# Connecting AWS Glue to your On Premises Database Demo
 
 This repository contains a demo showcasing features of AWS Services. When launching the CloudFormation template you will be able to see and test, how AWS Glue can connect to a Database in an On Premises environment through a Site-to-Site VPN connection.
 
