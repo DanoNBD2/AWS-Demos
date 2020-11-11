@@ -18,32 +18,37 @@ The S3 endpoint is going to be used by AWS Glue to store temporary files and ETL
 
 On the other hand, in the DC-VPC, we have an EC2 instance configured with OpenSwan software acting as the Customer Gateway Device. The router is going to reside in the public subnet and route all the private traffic coming from the Cloud to our private subnets. In these private subnets, we have a postgres database with the sample data already loaded. A private instance is created just to test the private connection to the cloud environment through AWS Site-to-Site VPN.
 
-## How to deploy the template
+## Launch the template
+
+1. Go to Amazon EC2 Console and on the left pane click on *Key Pairs* and create a key pair called **OpenswanKeyPair**
+
+![Key_Pair](/images/KeyPair.png)
+
+2. Click the button below to launch the CloudFormation template:
 
 [![Launch CFN stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://eu-west-1.console.aws.amazon.com/cloudformation/home?region=eu-west-1#/stacks/quickcreate?templateUrl=https%3A%2F%2Faws-glue-with-s2s-vpn.s3-eu-west-1.amazonaws.com%2FTemplates%2Fmain.yaml&stackName=aws-glue-with-s2s-vpn)
 
-1. If you don’t have the AWS CLI installed, follow [these](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html) steps. And to configure the AWS CLI, follow [these](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html#cli-configure-quickstart-config). 
-2. Clone the repository.
-3. Export the following parameters in your CLI:
+**(Optional)** Or deploy the template with CLI:
+
+* If you don’t have the AWS CLI installed, follow [these](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html) steps. And to configure the AWS CLI, follow [these](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html#cli-configure-quickstart-config). 
+* Clone the repository.
+* Export the following parameters in your CLI:
 ```bash
 export S3NAME=<YOUR BUCKET NAME> 
 export AWSREGION=<YOUR AWS REGION>
 export AWSPROFILE=<YOUR AWS PROFILE>
 export STACKNAME=<THE NAME OF YOUR STACK>
 ```
-4. Create a S3 bucket:
+* Create a S3 bucket:
 ```bash
 aws s3 mb s3://$S3NAME --profile $AWSPROFILE --region $AWSREGION
 ```
-5. Copy all the files from the cloned repository to your S3. To do that, enter the folder where you have the files that you need to copy and execute the following:
+* Copy all the files from the cloned repository to your S3. To do that, enter the folder where you have the files that you need to copy and execute the following:
 ```bash
 aws s3 cp . s3://$S3NAME --profile $AWSPROFILE --recursive
 ```
-6. Go to Amazon EC2 Console and on the left pane click on *Key Pairs* and create a key pair called **OpenswanKeyPair**
 
-![Key_Pair](/images/KeyPair.png)
-
-7. Go back to your terminal and create the CloudFormation stack:
+* Go back to your terminal and create the CloudFormation stack:
 ```bash
 aws cloudformation create-stack --stack-name $STACKNAME --template-url https://$S3NAME.s3.amazonaws.com/Templates/main.yaml --tags Key=project,Value=glue-project --profile $AWSPROFILE --region=$AWSREGION  --parameters ParameterKey=Bucket,ParameterValue=$S3NAME --capabilities CAPABILITY_IAM
 ```
@@ -135,6 +140,12 @@ After completing the demo, delete AWS CloudFormation Stack using AWS Console or 
 ```bash
 aws cloudformation delete-stack --stack-name $STACKNAME
 ```
+**NOTE:** If you did the optional part (*Perform an AWS Glue Job*) before cleaning up the environment you will have to delete the resources created by you first:
+
+1. Go to AWS Glue console and delete the Job created.
+2. Go to EC2 console and on the letf pane click on Network Interfaces.
+3. Select the ENI's used by your AWS Glue Job and delete all of the,
+4. Now you can delete de AWS Cloud Formation template form the CLI or from the console.
 
 ## Authors
 
