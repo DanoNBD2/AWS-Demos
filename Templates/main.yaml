@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description:  'AWS CloudFormation Sample Template:
-   **WARNING** You will be billed for the AWS resources used if you create a stack
+Description:  'AWS CloudFormation Template:
+  **WARNING** You will be billed for the AWS resources used if you create a stack
   from this template.'
 
 Parameters:
