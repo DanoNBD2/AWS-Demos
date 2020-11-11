@@ -140,7 +140,7 @@ After completing the demo, delete AWS CloudFormation Stack using AWS Console or 
 ```bash
 aws cloudformation delete-stack --stack-name $STACKNAME
 ```
-**NOTE:** If you did the optional part (Perform an AWS Glue Job) before cleaning up the environment you will have to delete the resources created by you first.
+**NOTE:** If you did the optional part (*Perform an AWS Glue Job*) before cleaning up the environment you will have to delete the resources created by you first:
 
 1. Go to AWS Glue console and delete the Job created.
 2. Go to EC2 console and on the letf pane click on Network Interfaces.
