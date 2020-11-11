@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: Create RDS
+Description: Create RDS database
 Parameters:
   EnvironmentName:
     Description: An environment name that is prefixed to resource names
