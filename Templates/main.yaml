@@ -3,17 +3,26 @@ Description:  'AWS CloudFormation Sample Template:
    **WARNING** You will be billed for the AWS resources used if you create a stack
   from this template.'
 
-Parameters:
-  Bucket:
-    Description: The bucket in which you stored the scripts
-    Type: String
+#    MIT No Attribution
+# Copyright 2020 Amazon Web Services (AWS)
+# Permission is hereby granted, free of charge, to any person obtaining a copy of this
+# software and associated documentation files (the "Software"), to deal in the Software
+# without restriction, including without limitation the rights to use, copy, modify,
+# merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
+# permit persons to whom the Software is furnished to do so.
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+# INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+# PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+# HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+# OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+# SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.'
 
 Resources:
   #VPC with the OpenSwan EC2. Will act as On-prem
   VPC1:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: !Sub https://${Bucket}.s3.amazonaws.com/Templates/simple_vpc.yaml
+      TemplateURL: !Sub https://aws-glue-with-s2s-vpn.s3.amazonaws.com/Templates/simple_vpc.yaml
       TimeoutInMinutes: '60'
       Parameters:
         EnvironmentName: DC-VPC
@@ -33,7 +42,7 @@ Resources:
   VPC2:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: !Sub https://${Bucket}.s3.amazonaws.com/Templates/simple_vpc.yaml
+      TemplateURL: !Sub https://aws-glue-with-s2s-vpn.s3.amazonaws.com/Templates/simple_vpc.yaml
       TimeoutInMinutes: '60'
       Parameters:
         EnvironmentName: Cloud-VPC
@@ -63,16 +72,19 @@ Resources:
   #S3 Bucket where the processed data it's going to reside
   GlueS3Bucket:
     Type: AWS::S3::Bucket
-    DeletionPolicy: Retain
     Properties:
       PublicAccessBlockConfiguration: 
-        RestrictPublicBuckets: true      
+        RestrictPublicBuckets: true
+      BucketName:
+        Fn::Join:
+          - '-'
+          - ['glue-demo', !Ref "AWS::AccountId", !Ref "AWS::Region"]      
 
   #Create Random VPN PreShared Key
   PreSharedKey:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: !Sub https://${Bucket}.s3.amazonaws.com/Templates/lambda_generate_random_string.yaml
+      TemplateURL: !Sub https://aws-glue-with-s2s-vpn.s3.amazonaws.com/Templates/lambda_generate_random_string.yaml
       TimeoutInMinutes: '60'
       Parameters:
         StringLength: 32
@@ -88,7 +100,7 @@ Resources:
     - VPC2
     - PreSharedKey
     Properties:
-      TemplateURL: !Sub https://${Bucket}.s3.amazonaws.com/Templates/vpn.yaml
+      TemplateURL: !Sub https://aws-glue-with-s2s-vpn.s3.amazonaws.com/Templates/vpn.yaml
       TimeoutInMinutes: '60'
       Parameters:
         EnvironmentName: Cloud-VPC
@@ -107,7 +119,7 @@ Resources:
     Type: AWS::CloudFormation::Stack
     DependsOn: VPNawsSide
     Properties:
-      TemplateURL: !Sub https://${Bucket}.s3.amazonaws.com/Templates/lambda_get_vpn_ips.yaml
+      TemplateURL: !Sub https://aws-glue-with-s2s-vpn.s3.amazonaws.com/Templates/lambda_get_vpn_ips.yaml
       TimeoutInMinutes: '60'
       Parameters:
         VpnConnectionId: !GetAtt VPNawsSide.Outputs.vpcVpnConnectionPrimary 
@@ -123,7 +135,7 @@ Resources:
     - VPNIPs
     - PreSharedKey
     Properties:
-      TemplateURL: !Sub https://${Bucket}.s3.amazonaws.com/Templates/OpenSwan.yaml
+      TemplateURL: !Sub https://aws-glue-with-s2s-vpn.s3.amazonaws.com/Templates/OpenSwan.yaml
       TimeoutInMinutes: '60'
       Parameters:
         EnvironmentName: DC-VPC
@@ -159,7 +171,7 @@ Resources:
     Type: AWS::CloudFormation::Stack
     DependsOn: Openswan
     Properties:
-      TemplateURL: !Sub https://${Bucket}.s3.amazonaws.com/Templates/lambda_get_primary_eni_id.yaml
+      TemplateURL: !Sub https://aws-glue-with-s2s-vpn.s3.amazonaws.com/Templates/lambda_get_primary_eni_id.yaml
       TimeoutInMinutes: '20'
       Parameters:
         InstanceId: !GetAtt Openswan.Outputs.InstanceId 
@@ -171,7 +183,7 @@ Resources:
     DependsOn: 
     - VPC1
     Properties:
-      TemplateURL: !Sub https://${Bucket}.s3.amazonaws.com/Templates/PrivateInstance.yaml
+      TemplateURL: !Sub https://aws-glue-with-s2s-vpn.s3.amazonaws.com/Templates/PrivateInstance.yaml
       TimeoutInMinutes: '60'
       Parameters:
         EnvironmentName: DC-VPC
@@ -192,7 +204,7 @@ Resources:
     - VPC1
     - RDS
     Properties:
-      TemplateURL: !Sub https://${Bucket}.s3.amazonaws.com/Templates/InstancePostgres.yaml
+      TemplateURL: !Sub https://aws-glue-with-s2s-vpn.s3.amazonaws.com/Templates/InstancePostgres.yaml
       TimeoutInMinutes: '60'
       Parameters:
         EnvironmentName: DC-VPC
@@ -215,7 +227,7 @@ Resources:
     DependsOn: 
     - VPC2
     Properties:
-      TemplateURL: !Sub https://${Bucket}.s3.amazonaws.com/Templates/PrivateInstance.yaml
+      TemplateURL: !Sub https://aws-glue-with-s2s-vpn.s3.amazonaws.com/Templates/PrivateInstance.yaml
       TimeoutInMinutes: '60'
       Parameters:
         EnvironmentName: Cloud-VPC
@@ -248,7 +260,7 @@ Resources:
     DependsOn: 
     - VPC1
     Properties:
-      TemplateURL: !Sub https://${Bucket}.s3.amazonaws.com/Templates/rds.yaml
+      TemplateURL: !Sub https://aws-glue-with-s2s-vpn.s3.amazonaws.com/Templates/rds.yaml
       TimeoutInMinutes: '60'
       Parameters:
         EnvironmentName: DC-VPC
@@ -267,17 +279,13 @@ Resources:
         - Key: Name
           Value: 'RDS-DC-VPCss'
 
-#Poner la EC2 con un script que genere la data en la base de datos (user script)
-#Hacer un curl y que se descargue los datos del repositorio de github mio
-#instalarle el cliente de postgres y que haga los inserts de la data en la base de datos (los datos deben estar en github)
-
   Glue: 
     Type: AWS::CloudFormation::Stack
     DependsOn: 
     - VPC2
     - RDS
     Properties:
-      TemplateURL: !Sub https://${Bucket}.s3.amazonaws.com/Templates/glue.yaml
+      TemplateURL: !Sub https://aws-glue-with-s2s-vpn.s3.amazonaws.com/Templates/glue.yaml
       TimeoutInMinutes: '60'
       Parameters:
         EnvironmentName: Cloud-VPC
@@ -288,3 +296,103 @@ Resources:
       Tags: 
         - Key: Name
           Value: 'RDS-DC-VPCss'
+
+## Cleanup S3 bucket when the stack is deleted
+  CleanupBucket:
+    DependsOn:
+      - GlueS3Bucket
+    Type: Custom::cleanupbucketlambda
+    Properties:
+      ServiceToken:
+       Fn::GetAtt:
+          - "CleanupBucketLambda"
+          - "Arn"
+      BucketName: !Ref GlueS3Bucket
+
+  CleanupLambdaLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: /aws/lambda/CleanupS3Lambda
+      RetentionInDays: 30
+
+  CleanupBucketLambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+          Action:
+          - sts:AssumeRole
+      Path: "/"
+      Policies:
+      - PolicyName: CleanupBucketLambdaPolicy
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+            - logs:DescribeLogStreams
+            - logs:CreateLogStream
+            - logs:PutLogEvents
+            - s3:DeleteObject
+            - s3:ListBucket
+            Resource: '*'
+          - Effect: Allow
+            Action: s3:PutObject
+            Resource: !Join ['', ['arn:aws:s3:::', 'glue-demo-', !Ref "AWS::AccountId", '-' , !Ref "AWS::Region", /*]]
+          - Effect: Allow
+            Action: s3:PutEncryptionConfiguration
+            Resource: !Join ['', ['arn:aws:s3:::', 'glue-demo-', !Ref "AWS::AccountId", '-' , !Ref "AWS::Region"]]
+  
+  CleanupBucketLambda:
+    DependsOn:
+      - GlueS3Bucket
+    Type: AWS::Lambda::Function    
+    Properties:
+      FunctionName: CleanupBucketLambda
+      Handler: "index.lambda_handler"
+      Runtime: python3.7
+      MemorySize: 128
+      Timeout: 60
+      Role: !GetAtt CleanupBucketLambdaRole.Arn
+      Code:
+        ZipFile: !Sub |
+            import json, boto3, logging, os, urllib3
+            import cfnresponse
+            logger = logging.getLogger()
+            logger.setLevel(logging.INFO)
+            AccountId = os.environ['AccountId']
+            GlueS3Bucket = os.environ['GlueS3Bucket']
+            def lambda_handler(event, context):
+                logger.info("event: {}".format(event))
+                try:
+                    bucket = event['ResourceProperties']['BucketName']
+                    logger.info("bucket: {}, event['RequestType']: {}".format(bucket,event['RequestType']))
+                    if event['RequestType'] == 'Delete':
+                        s3 = boto3.resource('s3')
+                        bucket = s3.Bucket(bucket)
+                        for obj in bucket.objects.filter():
+                            logger.info("delete obj: {}".format(obj))
+                            s3.Object(bucket.name, obj.key).delete()                 
+                    sendResponseCfn(event, context, cfnresponse.SUCCESS)
+                except Exception as e:
+                    logger.info("Exception: {}".format(e))
+                    sendResponseCfn(event, context, cfnresponse.FAILED)
+            def sendResponseCfn(event, context, responseStatus):
+                responseData = {}
+                responseData['Data'] = {}
+                cfnresponse.send(event, context, responseStatus, responseData, "CustomResourcePhysicalID")
+      Environment:
+        Variables:
+          Region:
+            !Ref "AWS::Region"
+          AccountId:
+            !Ref "AWS::AccountId"
+          GlueS3Bucket:
+            Fn::Join:
+              - '-'
+              - ['glue-demo', !Ref "AWS::AccountId", !Ref "AWS::Region"]
