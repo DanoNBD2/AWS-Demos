@@ -20,7 +20,7 @@ On the other hand, in the DC-VPC, we have an EC2 instance configured with OpenSw
 
 ## Launch the template
 
-1. Go to Amazon EC2 Console and on the left pane click on *Key Pairs* and create a key pair called **OpenswanKeyPair**
+1. Go to Amazon EC2 Console and on the left pane click on *Key Pairs* and create a key pair called **OpenswanKeyPair**. Choose the .pem format and create the key pair.
 
 ![Key_Pair](/images/KeyPair.png)
 
@@ -50,17 +50,17 @@ You have two VPCs, one called Cloud-VPC which is the AWS side of the infrastruct
 
 **In the Cloud-VPC note that it has:**
 * 4 subnets and all of them are private (even though there are two named as public, there is no internet gateway attached to the VPC so there is no public communication). The reason is because the communication between these two environments is going to be through the VPN, so there is no need to have public subnets nor internet access. 
-* 1 private route tables and inside you can see a S3 endpoint. This is for AWS Glue to access S3 privately (as this VPC does not has access to internet). 
+* 1 private route table and inside you can see a S3 endpoint. This is for AWS Glue to access S3 privately (as this VPC does not has access to internet). 
 * An EC2 instance with no public IP address. This is for you to test the VPN communication between the two environments.
 
-**In the data center VPC:**
+**In the Data Center VPC:**
 * Two private and two public subnets.
-* 1 NatGateway 
+* One Nat Gateway.
 * In the public subnet (AZ1) you have an EC2 instance already configured with OpenSwan software, just to serve as Customer’s Router (Customer Gateway Device).
-* In the private subnet (AZ1) behind the router resides the postgres database to which AWS Glue is going to connect and also 2 EC2 instances, one called *PrivateInstanceToPostgresDCVPC* which is going to put the sample data inside of the DB and *DC-VPC-private-instance* which is going to be used to ping the Cloud-VPC instance to test VPN connection.
+* In the private subnet (AZ1) behind the router resides the postgres database to which AWS Glue is going to connect and also two EC2 instances, one called *PrivateInstanceToPostgresDCVPC* which is going to put the sample data inside of the DB and *DC-VPC-private-instance* which is going to be used to ping the Cloud-VPC instance to test VPN connection.
 
 **AWS Site-to-Site VPN already created and fully configured:**
-* Go to AWS VPC console and on the left pane, select Site-to-Site VPN connections and on the Tunnel Details tab check that only one tunnel is up. 
+* Go to AWS VPC console and on the left pane, select Site-to-Site VPN connections and on the *Tunnel Details* tab check that only one tunnel is up. 
 * The reason why only one tunnel is up is because of the OpenSwan configuration. This is not highly available and redundant but sufficient for this demo.
 
 **In the AWS Glue console:**
@@ -73,7 +73,12 @@ You have two VPCs, one called Cloud-VPC which is the AWS side of the infrastruct
 
 ## Test the Communication between the two environments
 
-Go to AWS Systems Manager and on the left pane click on Managed Instances. Select *DC-Private-Instance* instance and click Actions > Start session. A new tab is opened with the instance’s terminal. Execute this command: ping (privateI) where the private IP is the IP of the *Cloud-VPC-private-instance* instance. 
+Go to AWS Systems Manager and on the left pane click on Managed Instances. Select *DC-Private-Instance* instance and click Actions > Start session. A new tab is opened with the instance’s terminal. Execute this command: 
+``` 
+ping <privateIP> 
+```
+where the private IP is the IP of the *Cloud-VPC-private-instance* instance.  
+
 In my case the command looks like this:
 ```bash
 ping 10.0.1.88
@@ -87,25 +92,27 @@ That means that the VPN connection is working successfully and the communication
 ## Test AWS Glue
 
 Go to AWS Glue console:
-* On the left pane click on Connections. You will see one connection listed called “ glueConnection-(+random string) select and click test connection. 
+* On the left pane click on *Connections*. You will see one connection listed called *glueConnection-(+random string*. Select it and click *Test connection*. Choose the role listed on the drop-down meno and test the connection. It may take a couple of minutes to receive the successful test message. 
 * If the results is successful that means AWS Glue could connect to your On premises DB instance through the VPN connection.
-* Now Select Crawlers and run it. This is going to scan the dataset and discover tables and store the dataset schema in the “dbcrawler” AWS Glue database.
+* On the left pane click on *Crawlers*. Select the *glue-db-crawler* crawler and run it. This is going to scan the dataset, discover tables, and store the dataset schema in the *dbcrawler* AWS Glue database.
+Wait until the following message is displayed:
+`Crawler "glue-db-crawler" completed and made the following changes: 1 tables created, 0 tables updated. See the tables created in database dbcrawler.`
 * Go and click in tables on the left pane and feel free to explore the dataset schema inside of the on premises database.
 
-`YOU ARE DONE!` The connection was done successfully and you have full connectivity between AWS Glue and your On Premises enviornment.
+`CONGRATULATIONS!` The connection was done successfully and you have full connectivity between AWS Glue and your On Premises enviornment.
 
 ## Perform an AWS Glue Job (Optional)
 
 Go to AWS Glue Console:
-* On the left pane click on Jobs.
-* Click on Add Job.
-* Put a name and the select the role called "demo-Glue-(+random string)
+* On the left pane click on *Jobs*.
+* Click on *Add Job*.
+* Give the job a name and the select the role called *demo-Glue-(+random string)*. Leave the rest parameters as default and click next.
 
 ![Job1](/images/GlueJob_Config1.png)
 
-* leave the rest parameters as default and click next.
 * Select the data source *raw_sportstickets_public_players* and click next.
-* In the next screen select these and select the bucket that was created for you (the one that has demo-glues3bucket+random string by name):
+* In the next window, select *Change Schema* and click next.
+* Selecr *Create tables in your data target*, SSelect *Amazon S3* as Data Store, *Parquet* as Format, and select the bucket that was created for you (the one that has *glue-demo-AccountId-Region* by name):
 
 ![Job2](/images/GlueJob_config2.png)
 
