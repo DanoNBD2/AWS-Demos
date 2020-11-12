@@ -1,5 +1,9 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: "Glue template for Demo"
+Description: >-
+    Template that creates a AWS Glue resources.
+    **WARNING** This template creates AWS Glue resources
+    You will be billed for the AWS resources used if you create a stack
+    from this template.
 
 Parameters:
   EnvironmentName:
@@ -53,8 +57,7 @@ Resources:
       IpProtocol: tcp
       FromPort: 0
       ToPort: 65535
-      SourceSecurityGroupId: !Ref GlueSG 
-      
+      SourceSecurityGroupId: !Ref GlueSG  
 
   #JDBC connection to DB
   glueConnection:
@@ -88,7 +91,6 @@ Resources:
           Parameters:
             key1 : "value1"
             key2 : "value2"
-
 
   #Glue crawler
   glueCrawler:

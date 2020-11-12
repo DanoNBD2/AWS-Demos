@@ -1,9 +1,9 @@
-# Deploy using:
-# aws cloudformation create-stack \
-#   --template-body "file://`pwd`/two_s3_buckets_inline_random_suffix.yaml" \
-#   --stack-name inline-test --capabilities CAPABILITY_IAM
 AWSTemplateFormatVersion: "2010-09-09"
-
+Description: >-
+    Lambda function to generate a random string.
+    **WARNING** This template creates  and executes an Amazon Lambda Function
+    You will be billed for the AWS resources used if you create a stack
+    from this template.
 Parameters:
   StringLength:
     Description: The lenght of the string

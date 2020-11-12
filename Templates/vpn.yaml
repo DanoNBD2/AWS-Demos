@@ -1,5 +1,9 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description:  This template creates all the necessary for a site to site hardware vpn in AWS 
+ 
+Description: >-
+  This template creates all the necessary for a site to site hardware vpn in AWS.
+  **WARNING** You will be billed for the AWS resources used if you create a stack
+  from this template.
 
 Parameters:
   EnvironmentName:
@@ -70,7 +74,6 @@ Resources:
     Properties:
       RouteTableIds:
         - !Ref PrivateRouteTable1
-        # - !Ref PrivateRouteTable2
       VpnGatewayId: !Ref vpcVpnGateway
     DependsOn: vpcVpnGatewayAttachment
   #Add a static route from the customer network to your VPC

@@ -1,7 +1,9 @@
 AWSTemplateFormatVersion: '2010-09-09'
-
-Description: "Template to launch an EC2 instance in a DC 
-Private Subnet to insert the sample data into the POSTGRES database"
+Description: >-
+   Template to launch an EC2 instance in a DC.
+   Private Subnet to insert the sample data into the POSTGRES database.
+   **WARNING** You will be billed for the AWS resources used if you create a stack
+   from this template.
 
 Parameters:
    EnvironmentName:
