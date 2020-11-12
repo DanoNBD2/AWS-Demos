@@ -40,7 +40,7 @@ export STACKNAME=<THE NAME OF YOUR STACK>
 ```
 * Go back to your terminal and create the CloudFormation stack:
 ```bash
-aws cloudformation create-stack --stack-name $STACKNAME --template-url https://$S3NAME.s3.amazonaws.com/Templates/main.yaml --tags Key=project,Value=glue-project --profile $AWSPROFILE --region=$AWSREGION --capabilities CAPABILITY_IAM
+aws cloudformation create-stack --stack-name $STACKNAME --template-url https://aws-glue-with-s2s-vpn.s3.amazonaws.com/Templates/main.yaml --tags Key=project,Value=glue-project --profile $AWSPROFILE --region=$AWSREGION --capabilities CAPABILITY_IAM
 ```
 *NOTE*: The template takes 30 min to deploy approx.
 
