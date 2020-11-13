@@ -140,7 +140,7 @@ aws cloudformation delete-stack --stack-name $STACKNAME
 **IMPORTANT:** If you did the optional part (*Perform an AWS Glue Job*) you will have to delete the resources created by you first before deleting the Cloud Formation stack:
 1. Go to AWS Glue Console and on the lef pane click on Jobs and erase the prevous job created by you.
 2. Go to EC2 console and on the letf pane click on Network Interfaces.
-3. Select the ENI's used by your AWS Glue Job and delete all of them.
+3. Select the ENI's used by your AWS Glue Job and delete all of them. **¿como se cuales son?**
 4. Now you can delete de AWS Cloud Formation template from the CLI or from the console.
 
 Cheers!!

@@ -6,6 +6,9 @@ Parameters:
   InstanceId:
     Description: Identifer of the instance for which to obtain the primary network interface
     Type: String
+  LambdaFunctionName:
+    Description: Name for the function
+    Type: String
 Resources:
   PrimaryEni:
       Type: Custom::PrimaryEniGenerator
@@ -15,7 +18,7 @@ Resources:
   PrimaryEniGenerator:
     Type: AWS::Lambda::Function
     Properties:
-      FunctionName: !Sub 'arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:get-primary-eni'
+      FunctionName: !Sub 'arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${LambdaFunctionName}'
       Handler: "index.lambda_handler"
       Timeout: 15
       Role: !GetAtt 'LambdaRole.Arn'

@@ -9,6 +9,8 @@ Parameters:
     Description: The lenght of the string
     Type: String
 
+
+
 Resources:
   RandomStringResource:
     Type: Custom::RandomString
@@ -27,8 +29,8 @@ Resources:
         ZipFile: |
           import cfnresponse
           from random import choice
-          from string import ascii_lowercase, ascii_uppercase, digits
-          def random_string(length=8, chars=ascii_lowercase + ascii_uppercase + digits):
+          from string import ascii_lowercase, digits
+          def random_string(length=8, chars=ascii_lowercase + digits):
             return "".join(choice(chars) for x in range(length))
           def lambda_handler(event, context):
             print(f"Data in event: {event}")

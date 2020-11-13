@@ -2,9 +2,15 @@ AWSTemplateFormatVersion: 2010-09-09
 Description: >-
     Lambda function to find and return the two Outside
     IP addresses for the VGW side of the VPN connection.
+    **WARNING** This template creates  and executes an Amazon Lambda Function
+    EC2 instance. You will be billed for the AWS resources used if you create a stack
+    from this template.
 Parameters:
   VpnConnectionId:
     Description: Identifer of the VPN for which to obtain the Outside IP addresses
+    Type: String
+  LambdaFunctionName:
+    Description: Name for the function
     Type: String
 Resources:
   VPNOutsideIP:
@@ -15,7 +21,7 @@ Resources:
   VPNOutsideIPGenerator:
     Type: AWS::Lambda::Function
     Properties:
-      FunctionName: !Sub 'arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:get-outside-ip'
+      FunctionName: !Sub 'arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${LambdaFunctionName}'
       Handler: "index.lambda_handler"
       Timeout: 15
       Role: !GetAtt 'LambdaRole.Arn'

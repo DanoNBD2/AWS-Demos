@@ -21,6 +21,10 @@ Parameters:
   PrivateRouteTable:
     Description: Private Route Table of the cloud VPC.
     Type: String
+  CrawlerName:
+    Description: Name of the database crawler
+    Type: String
+  
 
 Resources:
   #role for glue
@@ -85,7 +89,7 @@ Resources:
       Properties:
         CatalogId: !Ref AWS::AccountId
         DatabaseInput:
-          Name: "dbcrawler"
+          Name: !Ref CrawlerName
           Description: "Glue Database to store dataset schema"
           LocationUri: "LocationUri"
           Parameters:
@@ -98,7 +102,7 @@ Resources:
     Properties: 
       DatabaseName: !Ref crawlerDB
       Description: "schema of the db dataset"
-      Name: glue-db-crawler
+      Name: !Sub glue-${CrawlerName}
       Role: !Ref glueDemoRole
       TablePrefix: raw_
       Targets: 
