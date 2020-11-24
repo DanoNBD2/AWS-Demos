@@ -103,7 +103,7 @@ Resources:
                export DB="sportstickets";
                export PORT="5432";
 
-               echo "CREATE TABLE players (id decimal PRIMARY KEY, sport_team_id decimal NOT NULL, full_name varchar (50) NOT NULL, first_name varchar (50) NOT NULL, last_name varchar (50) NOT NULL); \copy players FROM '/tmp/sample-data.csv' delimiter ',' csv header;" | psql -h $HOST -p $PORT -d $DB -U $USER
+               echo "CREATE TABLE names (id decimal PRIMARY KEY, name varchar (50) NOT NULL); \copy names FROM '/tmp/sample-data.csv' delimiter ',' csv header;" | psql -h $HOST -p $PORT -d $DB -U $USER
 
 
    InstanceSecurityGroup:
